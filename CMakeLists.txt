@@ -16,6 +16,7 @@ add_executable(fever_renderer
         source/rsc/resource.cc
         source/rsc/resource.h
         source/rsc/resource.h
+        source/ogl/opengl.cc
 )
 target_include_directories(fever_renderer PRIVATE "./source")
 
