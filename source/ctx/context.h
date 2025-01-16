@@ -7,7 +7,7 @@ using glfw_context = GLFWwindow;
 struct ctx_context {
     glfw_context *handle;
 
-    void render() const;
+    void swap_buffers() const;
 
     void terminate() const;
 
