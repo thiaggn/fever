@@ -2,6 +2,7 @@
 #include <rsc/resource.h>
 #include <map>
 #include <vector>
+#include <string>
 
 void checkOpenGLError() {
     GLenum error = glGetError();  // Obtém o código de erro
@@ -96,13 +97,15 @@ struct gl_buffer {
 struct gl_program {
     uint handle;
 
-
     gl_program() {
         handle = glCreateProgram();
     }
 
     void load_shader(const char *path, gl_shader_type type) const {
-        struct rsc_text r = rsc_read_text(path);
+        std::string prefixed_path = "shaders/";
+        prefixed_path.append(path);
+
+        struct rsc_text r = rsc_read_text(prefixed_path.c_str());
         uint shader = glCreateShader(type);
         glShaderSource(shader, 1, &r.bytes, nullptr);
         glCompileShader(shader);
@@ -153,27 +156,23 @@ struct gl_program {
     }
 };
 
-typedef void (*procedure_func) ();
 
-struct gl_bindings {
+struct gl_state {
     uint handle;
 
-    gl_bindings(): handle(0) {
+    gl_state(): handle(0) {
         glGenVertexArrays(1, &handle);
         glBindVertexArray(handle);
     }
 
-    void bind() const {
+    void recover() const {
         glBindVertexArray(handle);
     }
-};
 
-struct gl_bindings gl_capture_bindings(procedure_func f) {
-    gl_bindings b;
-    f();
-    glBindVertexArray(0);
-    return b;
-}
+    gl_buffer create_buffer(gl_buffer_type type) {
+        return gl_buffer(type);
+    }
+};
 
 void gl_clear_color(float r, float g, float b, float a) {
     glClearColor(r, g, b, a);
