@@ -1,9 +1,9 @@
 #include "program.h"
-#include "shared/enums.h"
+#include "shader.h"
 #include "shared/aliases.h"
-#include "glad/glad.h"
-#include <stdlib.h>
+#include "shared/enums.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 gl_program::gl_program() {
     handle = glCreateProgram();
@@ -16,8 +16,14 @@ void gl_program::add(gl_shader_type type, const char *path) const {
     glDeleteShader(s.handle);
 }
 
+void gl_program::add(gl_shader s) const {
+    glAttachShader(handle, s.handle);
+    glDeleteShader(s.handle);
+}
+
 void gl_program::link() const {
     glLinkProgram(handle);
+    glUseProgram(handle);
     if (!linking_succeded()) {
         exit(EXIT_FAILURE);
     }
@@ -38,11 +44,6 @@ int gl_program::linking_succeded() const {
     }
 
     return success;
-}
-
-void gl_program::attach_shader(gl_shader s) const {
-    glAttachShader(handle, s.handle);
-    glDeleteShader(s.handle);
 }
 
 static int get_location(uint prog_handle, const char*name) {
@@ -83,7 +84,7 @@ struct gl_uniform gl_program::set_uniform(const char *name, int v1, int v2, int 
     return u;
 }
 
-struct gl_uniform gl_program::set_uniform(const char *name, float v) const {
+struct gl_uniform gl_program::set(const char *name, float v) const {
     struct gl_uniform u {};
     u.location = get_location(handle, name);
     u.update(v);

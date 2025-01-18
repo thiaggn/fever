@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 struct rsc_text rsc_read_text(const char *path) {
     std::string prefixed_path = "../assets/";
@@ -37,4 +39,28 @@ struct rsc_text rsc_read_text(const char *path) {
     resource.size = file_size+1;
     resource.bytes = buff;
     return resource;
+}
+
+rsc_image rsc_read_image(const char* path) {
+    std::string prefixed_path = "../assets/images/";
+    prefixed_path.append(path);
+
+    rsc_image r{};
+    stbi_set_flip_vertically_on_load(true);
+    r.bytes = stbi_load(prefixed_path.c_str(), &r.width, &r.height, &r.channels_count, 0);
+
+
+    if (r.bytes == nullptr) {
+        const char *reason = stbi_failure_reason();
+        fprintf(stderr, "error: rsc_read_image: stbi_load: failed to load image \"%s\": %s\n", prefixed_path.c_str(), reason);
+        exit(EXIT_FAILURE);
+    }
+
+    return r;
+}
+
+
+void rsc_image::release() {
+    stbi_image_free(bytes);
+    bytes = nullptr;
 }

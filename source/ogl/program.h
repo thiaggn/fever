@@ -2,7 +2,6 @@
 #include "glad/glad.h"
 #include "shader.h"
 #include "shared/aliases.h"
-#include "shared/enums.h"
 
 struct gl_uniform {
     int location;
@@ -23,9 +22,9 @@ struct gl_program {
 
     gl_program();
     void add(gl_shader_type type, const char *path) const;
-    void attach_shader(gl_shader s) const;
+    void add(gl_shader s) const;
 
-    gl_uniform set_uniform(const char *name, float v) const;
+    gl_uniform set(const char *name, float v) const;
     gl_uniform set_uniform(const char *name, float v1, float v2) const;
     gl_uniform set_uniform(const char *name, float v1, float v2, float v3) const;
     gl_uniform set_uniform(const char *name, float v1, float v2, float v3, float v4) const;

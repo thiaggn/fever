@@ -33,12 +33,19 @@ add_executable(fever_renderer
         source/ogl/program.h
         source/ogl/program.h
         source/ogl/shader.h
+        source/ogl/texture.cc
+        source/ogl/texture.h
+        source/ogl/texture.h
+        source/ogl/texture.cc
 )
 target_include_directories(fever_renderer PRIVATE "./source")
 
 # Dependencias
 find_package(glfw3 CONFIG REQUIRED)
 target_link_libraries(fever_renderer PRIVATE glfw)
+
+find_package(Stb REQUIRED)
+target_include_directories(fever_renderer PRIVATE ${Stb_INCLUDE_DIR})
 
 target_sources(fever_renderer PRIVATE "./vendor/glad/src/glad.c")
 target_include_directories(fever_renderer PRIVATE "./vendor/glad/include")

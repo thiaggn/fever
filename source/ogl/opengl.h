@@ -1,9 +1,10 @@
 #pragma once
 #include "buffer.h"
-#include "shader.h"
 #include "program.h"
+#include "shader.h"
 #include "shared/aliases.h"
 #include "shared/enums.h"
+#include "texture.h"
 #include <glad/glad.h>
 
 struct gl_state {
@@ -11,7 +12,9 @@ struct gl_state {
     uint handle;
 
     void recover() const;
-    void add(const gl_vertex_buffer & b) const;
+    void add(const gl_vertex_buffer &b) const;
+    void add(const gl_index_buffer &b) const;
+
 private:
     gl_state();
 };

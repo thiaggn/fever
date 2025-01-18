@@ -23,6 +23,11 @@ void gl_state::add(const gl_vertex_buffer & b) const {
     b.save_locations();
 }
 
+void gl_state::add(const gl_index_buffer &b) const {
+    glBindVertexArray(handle);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, b.handle);
+}
+
 void gl_instance::clear_color(float r, float g, float b, float a) const {
     glClearColor(r, g, b, a);
 }
