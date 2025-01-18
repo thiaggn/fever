@@ -46,7 +46,6 @@ struct ctx_context ctx_create(int width, int height, const char *title) {
 
     if(!has_loaded_glad) {
         has_loaded_glad = true;
-
         int version = gladLoadGL();
         printf("info: glad: loaded GL %d\n", version);
     }
@@ -66,4 +65,8 @@ void ctx_context::terminate() const {
 
 bool ctx_context::available() const {
     return !glfwWindowShouldClose(handle);
+}
+
+double ctx_context::get_time() const {
+    return glfwGetTime();
 }

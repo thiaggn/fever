@@ -1,49 +1,40 @@
 #include <ctx/context.h>
 #include <ogl/opengl.h>
+#include <math.h>
 
-
-float vertices[] = {
-        0.5f, 0.5f, 0.0f,  // top right
-        0.5f, -0.5f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,// bottom left
-        -0.5f, 0.5f, 0.0f  // top left
+float vert1[] = {
+        -0.8, 0.6, 0.0, 1.0, 0.0, 0.0,
+        -0.4, 0.2, 0.0, 0.0, 0.0, 1.0,
+         0.0, 0.8, 0.0, 0.0, 1.0, 0.0,
 };
 
-uint indices[] = {
-        0, 1, 3,
-        1, 2, 3,
-};
+struct gl_state create_triangle(const float vert[], llint size) {
+    gl_vertex_buffer vbuf(vert, size);
+    vbuf.set(0, 3, gl_float);
+    vbuf.set(1, 3, gl_float);
 
-gl_state create_rectangle() {
-    gl_state s;
-
-    gl_buffer vbo = s.create_buffer(gl_vertex_buffer);
-    vbo.load_static(vertices, sizeof(vertices));
-    vbo.push_attrib(gl_float, 3);
-
-    gl_buffer ebo = s.create_buffer(gl_element_buffer);
-    ebo.load_static(indices, sizeof(indices));
-
+    gl_state s = gl.create_state();
+    s.add(vbuf);
     return s;
 }
 
 int main() {
-    ctx_context c = ctx_create(800, 600, "LearnOpenGL");
+    ctx_context c = ctx_create(450, 450, "Fever Renderer");
 
     gl_program p;
-    p.load_shader("vertex.glsl", gl_vertex_shader);
-    p.load_shader("fragment.glsl", gl_fragment_shader);
+    p.add(gl_vert_shader, "vertex.glsl");
+    p.add(gl_frag_shader, "fragment.glsl");
     p.link();
 
-    gl_state s = create_rectangle();
+    gl_state s = create_triangle(vert1, sizeof(vert1));
 
     while (c.available()) {
-        gl_clear_color(0.2f, 0.3f, 0.3f, 1.0f);
-        gl_clear(gl_color_buffer);
+        gl.clear_color(0.2f, 0.3f, 0.3f, 1.0f);
+        gl.clear(gl_color_buffer);
 
         p.use();
         s.recover();
-        gl_draw_elements(gl_triangles, 6, gl_uint, nullptr);
+        gl.draw_buffer(gl_triangles, 0, 3);
 
         c.swap_buffers();
     }

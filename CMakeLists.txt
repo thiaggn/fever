@@ -17,6 +17,22 @@ add_executable(fever_renderer
         source/rsc/resource.h
         source/rsc/resource.h
         source/ogl/opengl.cc
+        source/ogl/shared/enums.h
+        source/ogl/program.cc
+        source/ogl/program.cc
+        source/ogl/shader.cc
+        source/ogl/shader.cc
+        source/ogl/buffer.cc
+        source/ogl/buffer.h
+        source/ogl/buffer.h
+        source/ogl/buffer.cc
+        source/ogl/shared/aliases.h
+        source/ogl/shared/aliases.h
+        source/ogl/shared/aliases.cc
+        source/ogl/shared/aliases.cc
+        source/ogl/program.h
+        source/ogl/program.h
+        source/ogl/shader.h
 )
 target_include_directories(fever_renderer PRIVATE "./source")
 

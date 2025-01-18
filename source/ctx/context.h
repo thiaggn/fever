@@ -11,6 +11,8 @@ struct ctx_context {
 
     void terminate() const;
 
+    double get_time() const;
+
     [[nodiscard]] bool available() const;
 };
 
