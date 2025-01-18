@@ -7,11 +7,13 @@
 #include <glad/glad.h>
 
 struct gl_state {
+    friend struct gl_instance;
     uint handle;
 
-    gl_state();
     void recover() const;
     void add(const gl_vertex_buffer & b) const;
+private:
+    gl_state();
 };
 
 struct gl_instance {
