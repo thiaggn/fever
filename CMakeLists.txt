@@ -44,6 +44,9 @@ target_include_directories(fever_renderer PRIVATE "./source")
 find_package(glfw3 CONFIG REQUIRED)
 target_link_libraries(fever_renderer PRIVATE glfw)
 
+find_package(glm CONFIG REQUIRED)
+target_link_libraries(fever_renderer PRIVATE glm::glm)
+
 find_package(Stb REQUIRED)
 target_include_directories(fever_renderer PRIVATE ${Stb_INCLUDE_DIR})
 

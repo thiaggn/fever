@@ -7,24 +7,28 @@
 #include "texture.h"
 #include <glad/glad.h>
 
-struct gl_state {
-    friend struct gl_instance;
-    uint handle;
+namespace gl {
+    struct state {
+        friend struct instance;
+        uint handle;
 
-    void recover() const;
-    void add(const gl_vertex_buffer &b) const;
-    void add(const gl_index_buffer &b) const;
+        void recover() const;
+        void add(const vertex_buffer &b) const;
+        void add(const index_buffer &b) const;
 
-private:
-    gl_state();
-};
+    private:
+        state();
+    };
 
-struct gl_instance {
-    void clear_color(float r, float g, float b, float a) const;
-    void clear(gl_bit b) const;
-    void draw_buffer(gl_primitive p, int first, int many_vertices) const;
-    void draw_elements(gl_primitive p, int count, gl_data_type index_dtype, void *offset) const;
-    gl_state create_state() const;
-};
+    struct instance {
+        void clear_color(float r, float g, float b, float a) const;
+        void clear(buffer_bit b) const;
+        void draw_buffer(primitive p, int first, int many_vertices) const;
+        void draw_elements(primitive p, int count, data_type index_dtype, void *offset) const;
+        state create_state() const;
+    };
 
-extern const gl_instance gl;
+    void check_error();
+}
+
+extern const gl::instance GL;

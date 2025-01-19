@@ -47,7 +47,7 @@ rsc_image rsc_read_image(const char* path) {
 
     rsc_image r{};
     stbi_set_flip_vertically_on_load(true);
-    r.bytes = stbi_load(prefixed_path.c_str(), &r.width, &r.height, &r.channels_count, 0);
+    r.bytes = stbi_load(prefixed_path.c_str(), &r.width, &r.height, &r.channel_count, 0);
 
 
     if (r.bytes == nullptr) {

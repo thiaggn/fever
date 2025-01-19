@@ -4,52 +4,53 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum gl_wrap_mode {
-    gl_repeat = GL_REPEAT,
-    gl_clamp_to_edge = GL_CLAMP_TO_EDGE,
-    gl_clamp_to_border = GL_CLAMP_TO_BORDER,
-    gl_mirror_clamp_to_edge = GL_MIRROR_CLAMP_TO_EDGE,
-};
+namespace gl {
+    enum wrap_mode {
+        repeat = GL_REPEAT,
+        clamp_to_edge = GL_CLAMP_TO_EDGE,
+        clamp_to_border = GL_CLAMP_TO_BORDER,
+        clamp_to_edge_mirror = GL_MIRROR_CLAMP_TO_EDGE,
+    };
+    
+    enum tex_dimensions {
+        dim_2d = GL_TEXTURE_2D,
+        dim_3d = GL_TEXTURE_3D,
+    };
 
-enum gl_tex_dimensions {
-    gl_2D = GL_TEXTURE_2D,
-    gl_texture_3d = GL_TEXTURE_3D,
-};
+    enum tex_filtering {
+        nearest = GL_NEAREST,
+        linear = GL_LINEAR,
+    };
 
-enum gl_tex_filtering {
-    gl_nearest = GL_NEAREST,
-    gl_linear = GL_LINEAR,
-};
+    struct tex_wrapping {
+        wrap_mode s;
+        wrap_mode t;
+        wrap_mode r;
 
-struct gl_tex_wrapping {
-    gl_wrap_mode s;
-    gl_wrap_mode t;
-    gl_wrap_mode r;
+        tex_wrapping() : s(repeat), t(repeat), r(repeat) {}
+    };
 
-    gl_tex_wrapping() : s(gl_repeat), t(gl_repeat), r(gl_repeat) {}
-};
+    struct filtering {
+        tex_filtering min;
+        tex_filtering mag;
 
-struct gl_filtering {
-    gl_tex_filtering min;
-    gl_tex_filtering mag;
+        filtering() : min(nearest), mag(nearest) {}
+    };
 
-    gl_filtering() : min(gl_nearest), mag(gl_nearest) {}
-};
+    struct texture_create_info {
+        tex_dimensions dimension;
+        tex_wrapping wrap;
+        filtering filter;
+        struct { filtering filter; } mipmap;
 
-struct gl_texture_params {
-    gl_tex_dimensions dimension;
-    gl_tex_wrapping wrap;
-    gl_filtering filter;
-    struct { gl_filtering filter; } mipmap;
+        explicit texture_create_info(tex_dimensions d) : dimension(d) {};
+    };
 
-    explicit gl_texture_params(gl_tex_dimensions d) : dimension(d) {};
+    struct texture {
+        uint handle;
+        uint target;
 
-};
-
-struct gl_texture {
-    uint handle;
-    uint target;
-
-    explicit gl_texture (const gl_texture_params &p, const char *path);
-    void use() const;
-};
+        explicit texture (const texture_create_info &p, const char *path);
+        void use(uint unit) const;
+    };
+}

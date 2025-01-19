@@ -6,7 +6,7 @@ struct rsc_text {
 
 struct rsc_image {
     unsigned char *bytes;
-    int width, height, channels_count;
+    int width, height, channel_count;
 
     void release();
 };
